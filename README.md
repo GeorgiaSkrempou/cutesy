@@ -1,0 +1,1 @@
+Python code to display love messages for your S.O on Grove-16x2 LCD screen. Useful if you also always want to know the weather.
