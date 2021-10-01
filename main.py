@@ -56,10 +56,10 @@ def weather(lat, lng):
     }
 
 def format_temp(city, temp, weather_code):
-    return '{} {} C      {}'.format(city, temp, weather_code)
+    return '{} {} C {}'.format(city, temp, weather_code)
 
 def format_wind(city, wind):
-    return '{} Windspeed       {} KM/H'.format(city, wind)
+    return '{} Windspeed {} KM/H'.format(city, wind)
 
 display = Factory.getDisplay(DISPLAY_ID)
 display.clear()
@@ -85,26 +85,12 @@ while True:
     cute_messages.append(format_temp('ATH', ath_weather['temp'],ath_weather['code'] ))
     cute_messages.append(format_wind('ATH', ath_weather['windspeed']))
 
-    for message in cute_messages:
-        display.clear()
-        if len(message) > 32:
-            display.setCursor(0,0)
-            display.write('Error. Cuteness')
-            display.setCursor(1,0)
-            display.write('Overload')
-        elif len(message) > 16:
-            splitMessage = wrap(message,16)
-            display.setCursor(0,0)
-            display.write(splitMessage[0])
-            display.setCursor(1,0)
-            display.write(splitMessage[1])
-        elif len(message) <= 16:
-            display.setCursor(0,0)
-            display.write(message)
-        time.sleep(5)
+    for message in range(0,len(cute_messages)):
+        cute_messages[message] = 15*' '+cute_messages[message]+' '
 
-    
-
-
-
-    
+    for message in range(0,len(cute_messages)):
+        for letter in range(0, len(cute_messages[message])):
+            display.clear()
+            
+            display.write(cute_messages[message][letter:len(cute_messages[message])])
+            time.sleep(0.3)

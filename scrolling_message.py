@@ -10,6 +10,8 @@ DISPLAY_ID = 'JHD1802'
 display = Factory.getDisplay(DISPLAY_ID)
 display.clear()
 
+
+
 cute_messages = ['Hey lil\' bug, I love you']
 cute_messages.append('Hakuna matata!')
 
