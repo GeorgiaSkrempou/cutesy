@@ -12,6 +12,8 @@ AMS_LAT = 52.38275
 AMS_LNG = 4.8523391
 ATH_LAT = 37.983810
 ATH_LNG = 23.727539
+CITY_1 = "Amsterdam"
+CITY_2 = "Athens"
 
 WEATHER_CODES = {
     0: 'Clear sky',
@@ -56,41 +58,87 @@ def weather(lat, lng):
     }
 
 def format_temp(city, temp, weather_code):
-    return '{} {} C {}'.format(city, temp, weather_code)
+    return {
+        'city': city,
+        'displayed_weather': '{} C {} '.format(temp, weather_code)
+    }
 
 def format_wind(city, wind):
-    return '{} Windspeed {} KM/H'.format(city, wind)
+    return {
+        'city': city,
+        'displayed_wind': 'Windspeed {} KM/H '.format(wind)
+    }
 
 display = Factory.getDisplay(DISPLAY_ID)
 display.clear()
 
+cute_messages = ['Hey lil\' bug, I love you']
+#cuteMessages.append('Insert cute message')
+#cuteMessages.append('Insert cute message')
+cute_messages.append('Hakuna matata!')
+
+for message in range(0,len(cute_messages)):
+        cute_messages[message] = 15*' '+cute_messages[message]+' '
+
 while True:
-    cute_messages = ['Hey lil\' bug, I love you']
-    #cuteMessages.append('Insert cute message')
-    #cuteMessages.append('Insert cute message')
-    cute_messages.append('Hakuna matata!')
+    weather_msg_ams = []
+    weather_msg_ath = []
 
     ams_weather = weather(AMS_LAT, AMS_LNG)
     ams_date_now = datetime.datetime.now(pytz.timezone('Europe/Amsterdam'))
-    ams_formatted_date = ams_date_now.strftime('AMS %d %b %Y %H:%M')
+    ams_formatted_date = ams_date_now.strftime('%d %b %Y %H:%M')
 
     ath_weather = weather(ATH_LAT, ATH_LNG)
     ath_date_now = datetime.datetime.now(pytz.timezone('Europe/Athens'))
-    ath_formatted_date = ath_date_now.strftime('ATH %d %b %Y %H:%M')
+    ath_formatted_date = ath_date_now.strftime('%d %b %Y %H:%M')
 
-    cute_messages.append(ams_formatted_date)
-    cute_messages.append(format_temp('AMS', ams_weather['temp'],ams_weather['code'] ))
-    cute_messages.append(format_wind('AMS', ams_weather['windspeed']))
-    cute_messages.append(ath_formatted_date)
-    cute_messages.append(format_temp('ATH', ath_weather['temp'],ath_weather['code'] ))
-    cute_messages.append(format_wind('ATH', ath_weather['windspeed']))
+    weather_msg_ams.append(ams_formatted_date)
 
-    for message in range(0,len(cute_messages)):
-        cute_messages[message] = 15*' '+cute_messages[message]+' '
+    fmt_weather = format_temp(CITY_1, ams_weather['temp'],ams_weather['code'] )
+    weather_msg_ams.append(fmt_weather['displayed_weather'])
 
+    fmt_wind = format_wind(CITY_1, ams_weather['windspeed'])
+    weather_msg_ams.append(fmt_wind['displayed_wind'])
+
+    weather_msg_ath.append(ath_formatted_date)
+
+    fmt_weather = format_temp(CITY_2, ath_weather['temp'],ath_weather['code'] )
+    weather_msg_ath.append(fmt_weather['displayed_weather'])
+
+    fmt_wind = format_wind(CITY_2, ath_weather['windspeed'])
+    weather_msg_ath.append(fmt_wind['displayed_wind'])
+
+    for message in range(0,len(weather_msg_ams)):
+         weather_msg_ams[message] = 15 * ' ' + weather_msg_ams[message] + ' '
+
+    for message in range(0,len(weather_msg_ath)):
+         weather_msg_ath[message] = 15 * ' ' + weather_msg_ath[message] + ' '
+
+    #display weather
+    for message in range(0, len(weather_msg_ams)):
+        for letter in range(0, len(weather_msg_ams[message])):
+            display.clear()
+            display.setCursor(0,3)
+            display.write(CITY_1)
+            display.setCursor(1,0)
+            display.write(weather_msg_ams[message][letter:len(weather_msg_ams[message])])
+            time.sleep(0.5)
+
+    for message in range(0, len(weather_msg_ath)):
+        for letter in range(0, len(weather_msg_ath[message])):
+            display.clear()
+            display.setCursor(0,5)
+            display.write(CITY_2)
+            display.setCursor(1,0)
+            display.write(weather_msg_ath[message][letter:len(weather_msg_ath[message])])
+            time.sleep(0.5)
+
+    #display cute messages
     for message in range(0,len(cute_messages)):
         for letter in range(0, len(cute_messages[message])):
             display.clear()
-            
+            display.setCursor(0,0)
+            display.write('Cute msgs for U:')
+            display.setCursor(1,0)            
             display.write(cute_messages[message][letter:len(cute_messages[message])])
-            time.sleep(0.3)
+            time.sleep(0.5)
